@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if [ -n "$(git status --porcelain --untracked-files=no)" ]; then
+    DIRTY="-dirty"
+fi
+
+COMMITCOUNT=$(git log  --oneline | wc -l)
+
+if [[ -z "$DIRTY" ]]; then
+    VERSION="${COMMITCOUNT}"
+else
+    VERSION="${COMMITCOUNT}${DIRTY}"
+fi
+
+if [ -z "$ARCH" ]; then
+    ARCH=amd64
+fi

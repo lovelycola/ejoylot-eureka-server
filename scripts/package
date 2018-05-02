@@ -1,0 +1,25 @@
+#!/bin/bash
+set -e
+
+source $(dirname $0)/version
+
+ARCH=${ARCH:?"ARCH not set"}
+SUFFIX=""
+[ "${ARCH}" != "amd64" ] && SUFFIX="_${ARCH}"
+
+cd $(dirname $0)/../package
+
+REPO=${REPO:-ejoylot}
+#REPO=${REPO:-10.253.127.117:8080/ejoylot}
+
+if [ $# -eq 1 ]; then
+    TAG=$1
+else
+    TAG=${TAG:-${VERSION}${SUFFIX}}
+fi
+
+
+echo "docker build -t ${REPO}/eurekaserver:${TAG} ."
+docker build -t ${REPO}/eurekaserver:${TAG} .
+
+echo Built ${REPO}/eurekaserver:${TAG}
